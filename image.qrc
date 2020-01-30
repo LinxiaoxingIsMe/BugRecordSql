@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/new">
+        <file>toolBarButton/Knob Add.ico</file>
+        <file>toolBarButton/Knob Cancel.ico</file>
+        <file>toolBarButton/Knob Loop On.ico</file>
+        <file>toolBarButton/Knob Search.ico</file>
+        <file>toolBarButton/Save.ico</file>
+    </qresource>
+</RCC>
