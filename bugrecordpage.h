@@ -5,6 +5,8 @@
 #pragma execution_character_set("utf-8")
 
 #endif
+
+
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QDebug>
@@ -15,6 +17,7 @@
 #include <QSqlTableModel>
 #include <QItemSelectionModel>
 #include <QLabel>
+#include "qsqlbugmodel.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class BugRecordPage; }
 QT_END_NAMESPACE
@@ -32,7 +35,7 @@ private:
 
     QLabel *labelMessage;
 
-    QSqlTableModel *tabBugRecord;
+    QSqlBugModel *tabBugRecord;
     QSqlDatabase Db;
     QItemSelectionModel *theSelection;
 
