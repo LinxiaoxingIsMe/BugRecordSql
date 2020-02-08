@@ -28,7 +28,8 @@ HEADERS += \
 
 FORMS += \
     bugrecordpage.ui \
-    diacreatenewdata.ui
+    diacreatenewdata.ui \
+    dialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

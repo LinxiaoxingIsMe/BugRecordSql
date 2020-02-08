@@ -1,6 +1,7 @@
 ﻿#include "bugrecordpage.h"
 #include "ui_bugrecordpage.h"
-
+#include "diacreatenewdata.h"
+#include <QSqlRecord>
 BugRecordPage::BugRecordPage(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::BugRecordPage)
@@ -46,12 +47,12 @@ void BugRecordPage::openTable()
         return;
     }
 
+    tabBugRecord->setHeaderData(tabBugRecord->fieldIndex("Id"), Qt::Horizontal, "ID");
     tabBugRecord->setHeaderData(tabBugRecord->fieldIndex("Describe"), Qt::Horizontal, "描述");
     tabBugRecord->setHeaderData(tabBugRecord->fieldIndex("Remarks"), Qt::Horizontal, "备注");
-    tabBugRecord->setHeaderData(tabBugRecord->fieldIndex("Time"), Qt::Horizontal, "Time");
+    tabBugRecord->setHeaderData(tabBugRecord->fieldIndex("Time"), Qt::Horizontal, "时间");
     tabBugRecord->setHeaderData(tabBugRecord->fieldIndex("Finish"), Qt::Horizontal, "是否完成");
-
-//    tabBugRecord->setData(tabBugRecord->fieldIndex("Finish"))
+    tabBugRecord->setHeaderData(tabBugRecord->fieldIndex("Priority"), Qt::Horizontal, "优先级");
     ui->tableBugRecord->setModel(tabBugRecord);
 
     theSelection = new QItemSelectionModel(tabBugRecord);
@@ -61,9 +62,10 @@ void BugRecordPage::openTable()
     ui->tableBugRecord->setSelectionModel(theSelection);
     ui->tableBugRecord->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->tableBugRecord->setSelectionBehavior(QAbstractItemView::SelectItems);
+    ui->tableBugRecord->setColumnHidden(tabBugRecord->fieldIndex("Id"), true);
 
-    //是否完成 自定义组件
-
+    connect(ui->actNew, &QAction::triggered, this, &BugRecordPage::createNewData);
+    connect(ui->actModify, &QAction::triggered, this, &BugRecordPage::modifyData);
 }
 
 void BugRecordPage::tableCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
@@ -83,5 +85,35 @@ void BugRecordPage::tableCurrentRowChanged(const QModelIndex &current, const QMo
 
     ui->actDel->setEnabled(current.isValid());
     ui->actModify->setEnabled(current.isValid());
+}
+
+void BugRecordPage::updateData(int curRecNo)
+{
+    QSqlRecord curRec = tabBugRecord->record(curRecNo);
+    DiaCreateNewData *dataDialog = new DiaCreateNewData(this);
+    Qt::WindowFlags flags = dataDialog->windowFlags();
+    dataDialog->setWindowFlags(flags | Qt::MSWindowsFixedSizeDialogHint);
+
+    dataDialog->setUpdateRecord(curRec);
+    int ret = dataDialog->exec();
+    if(ret == QDialog::Accepted)
+    {
+        QSqlRecord recData = dataDialog->getRecordData();
+        QSqlQuery query;
+//        query.prepare("update bugRecordTable set Describe=:Describe, Remarks=:Remarks,")
+    }
+    delete dataDialog;
+}
+
+void BugRecordPage::createNewData()
+{
+
+}
+
+void BugRecordPage::modifyData()
+{
+    int curRecNo = theSelection->currentIndex().row();
+    updateData(curRecNo);
+
 }
 

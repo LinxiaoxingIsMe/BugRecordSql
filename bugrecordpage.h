@@ -35,6 +35,7 @@ private:
 
     QLabel *labelMessage;
 
+//    QSqlTableModel *tabBugRecord;
     QSqlBugModel *tabBugRecord;
     QSqlDatabase Db;
     QItemSelectionModel *theSelection;
@@ -44,5 +45,9 @@ private:
 
     void tableCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
     void tableCurrentRowChanged(const QModelIndex &current, const QModelIndex &previous);
+
+    void updateData(int curRecNo);
+    void createNewData();
+    void modifyData();
 };
 #endif // BUGRECORDPAGE_H
